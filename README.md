@@ -1,16 +1,41 @@
 # qr_scanner_app
 
-A new Flutter project.
+QR Scanner App, hızlı ve kolay QR kod taraması yapmanızı sağlayan Flutter tabanlı mobil uygulamadır. Taradığınız QR kodları cihazda SQLite veritabanında saklar, geçmişe erişim sağlar ve taradığınız linkleri doğrudan açmanızı sağlar.
 
-## Getting Started
+## Kullanım
+Uygulamayı açınca Splash ekranı görünecek.
 
-This project is a starting point for a Flutter application.
+Oradan "Başla" butonuna basarak tarama ekranına geçebilirsiniz.
 
-A few resources to get you started if this is your first Flutter project:
+QR kodları otomatik olarak algılar ve SQLite veritabanında saklar.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Geçmiş sayfasından daha önce taradığınız kodlara ulaşabilirsiniz.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Ayarlar sayfasından uygulamayı paylaşabilir veya geri bildirim gönderebilirsiniz.
+
+## Özellikler
+
+- Yüksek performanslı QR kod tarayıcı
+
+- Tarama geçmişini SQLite veritabanı kullanarak kalıcı şekilde kaydetme ve listeleme
+
+- Tekrar tarama ve kodu doğrudan açma imkanı
+
+- Uygulama paylaşma ve geri bildirim gönderme
+
+- Koyu tema ve bildirim ayarları (geliştirmeye açık)
+
+- Kullanımı kolay ve modern arayüz
+  
+## Kurulum
+1.Flutter SDK kurulu olmalı. Flutter kurulumu için buraya tıklayın
+
+2.Projeyi klonlayın:
+git clone https://github.com/Tunahanozgenc/qr_scanner_app.git  - cd qr_scanner_app
+
+3.Bağımlılıkları yükleyin:
+flutter pub get
+
+4.Uygulamayı çalıştırın:
+flutter run
+
