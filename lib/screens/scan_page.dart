@@ -3,6 +3,7 @@ import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../database/qr_database.dart';
 
+// QR kod tarayıcı ekranı
 class ScanPage extends StatefulWidget {
   const ScanPage({super.key});
 
@@ -11,16 +12,18 @@ class ScanPage extends StatefulWidget {
 }
 
 class _ScanPageState extends State<ScanPage> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  QRViewController? controller;
-  String? qrText;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR'); // QRView için anahtar
+  QRViewController? controller; // Kamerayı ve taramayı yöneten kontrolcü
+  String? qrText; // Tarama sonucu QR kod metni
 
+  // Sayfa yok edilirken controller'ı da dispose et
   @override
   void dispose() {
     controller?.dispose();
     super.dispose();
   }
 
+  // Hot reload gibi durumlarda Android'de kamerayı durdurup tekrar başlat
   @override
   void reassemble() {
     super.reassemble();
@@ -32,11 +35,13 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
+  // Metin bir URL mi diye kontrol eder
   bool _isURL(String text) {
     final uri = Uri.tryParse(text);
     return uri != null && (uri.isScheme('http') || uri.isScheme('https'));
   }
 
+  // URL’yi cihazın tarayıcısında açar
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri)) {
@@ -48,28 +53,36 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
+  // QRView oluşturulduğunda çağrılır, taranan veriyi dinler
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
+
+    // Kameradan gelen QR kodları sürekli dinlenir
     controller.scannedDataStream.listen((scanData) async {
       final code = scanData.code;
+
+      // Yeni bir QR kod tarandığında (öncekinden farklıysa)
       if (code != null && code != qrText) {
         setState(() {
           qrText = code;
         });
 
-        // Veritabanından kodları çek
+        // Veritabanındaki tüm kodları al
         final allCodes = await QRDatabase.instance.getAllCodes();
         final codes = allCodes.map((e) => e.code).toList();
 
+        // Kod veritabanında yoksa ekle
         if (!codes.contains(code)) {
           await QRDatabase.instance.insertCode(code);
         }
 
+        // Kamerayı durdur (aynı kod tekrar tekrar taranmasın diye)
         controller.pauseCamera();
       }
     });
   }
 
+  // Tekrar tarama işlemi başlatır
   void _restartScan() {
     setState(() {
       qrText = null;
@@ -81,6 +94,7 @@ class _ScanPageState extends State<ScanPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Kamera ekranı (QR tarayıcı)
         Expanded(
           flex: 4,
           child: QRView(
@@ -95,6 +109,8 @@ class _ScanPageState extends State<ScanPage> {
             ),
           ),
         ),
+
+        // Tarama sonucu kutusu
         Expanded(
           flex: 1,
           child: Center(
@@ -123,11 +139,14 @@ class _ScanPageState extends State<ScanPage> {
             ),
           ),
         ),
+
+        // Alt kısımda butonlar (flaş ve tekrar tara)
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Flaş butonu
               OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
                   foregroundColor: const Color(0xFFF4A261),
@@ -138,7 +157,7 @@ class _ScanPageState extends State<ScanPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
                 onPressed: () async {
-                  await controller?.toggleFlash();
+                  await controller?.toggleFlash(); // Flaş durumunu değiştir
                   setState(() {});
                 },
                 icon: const Icon(Icons.flash_on),
@@ -153,7 +172,10 @@ class _ScanPageState extends State<ScanPage> {
                   },
                 ),
               ),
+
               const SizedBox(width: 16),
+
+              // "Tekrar Tara" butonu (sadece tarama yapılmışsa görünür)
               if (qrText != null)
                 FilledButton.icon(
                   style: FilledButton.styleFrom(

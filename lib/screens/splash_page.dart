@@ -1,38 +1,44 @@
-import 'dart:ffi';
+import 'dart:ffi'; // Bu kullanılmıyor, silebilirsin
 import 'package:flutter/material.dart';
-import 'main_page.dart'; // MainPage'i import et
+import 'main_page.dart'; // Ana sayfa (MainPage) için import
 
+// Uygulama açılış (splash) ekranı
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Sayfanın arka planı sarı
       body: Container(
         color: const Color(0xFFFDB623),
         child: Center(
-
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center, // Ortala
             crossAxisAlignment: CrossAxisAlignment.center,
+
             children: [
+              // QR ikon görseli
               Image.asset(
-                'assets/qr.png',
+                'assets/qr.png', // asset klasöründen görsel
                 width: 130,
                 height: 130,
               ),
+
               const SizedBox(height: 100),
+
+              // Alt kart: metin ve buton içeriyor
               Container(
                 height: 200,
                 width: 300,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF2A2A2A),
+                  color: const Color(0xFF2A2A2A), // Siyah arka planlı kart
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
                   children: [
+                    // Başlık metni
                     const Text(
                       'Hadi Başlayalım',
                       style: TextStyle(
@@ -42,6 +48,8 @@ class SplashPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
+
+                    // Açıklama metni
                     const Text(
                       'QR kodlarını ücretsiz tarayın, hayatınızı bizimle kolaylaştırın!',
                       textAlign: TextAlign.center,
@@ -50,16 +58,19 @@ class SplashPage extends StatelessWidget {
                         color: Colors.white70,
                       ),
                     ),
-                    const SizedBox(height: 20,),
+                    const SizedBox(height: 20),
+
+                    // "Başla" butonu
                     ElevatedButton(
                       onPressed: () {
+                        // Ana sayfaya geçiş yapılır, splash ekranı silinir
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (_) => MainPage()),
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: const Color(0xFFF4A261),
+                        foregroundColor: const Color(0xFFF4A261), // Buton rengi
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:share_plus/share_plus.dart'; // Uygulama paylaşımı için
 
+// Ayarlar sayfası — Tema, bildirim, paylaşım ve geri bildirim seçeneklerini içerir
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
@@ -9,15 +10,22 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  // Temaya dair yerel değişken
   bool darkMode = false;
+
+  // Bildirim açık/kapalı durumu
   bool notifications = true;
 
+  // Uygulamayı başkalarıyla paylaşmak için
   void _shareApp() {
-    Share.share('Check out this awesome QR Scanner App! Download it now!');
+    Share.share(
+      '📲 QR Scanner App!\n\nHemen indirmek için buraya tıkla:\nhttps://github.com/Tunahanozgenc/qr_scanner_app',
+    );
   }
 
+
+  // Geri bildirim verme işlemi (şu anda sadece snackbar gösteriyor)
   void _sendFeedback() {
-    // Burada mail göndermek veya başka işlem yapabilirsin
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Feedback feature coming soon!')),
     );
@@ -29,12 +37,14 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          // Sayfa başlığı
           const Text(
             'Settings',
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 24),
 
+          // Dark mode ayarı
           ListTile(
             leading: const Icon(Icons.dark_mode),
             title: const Text('Dark Mode'),
@@ -44,12 +54,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 setState(() {
                   darkMode = value;
                 });
-                // Tema değiştirme işlemini buraya ekleyebilirsin
+                // Buraya tema değiştirme işlemi eklenebilir
               },
             ),
           ),
           const Divider(),
 
+          // Bildirim ayarı
           ListTile(
             leading: const Icon(Icons.notifications),
             title: const Text('Notifications'),
@@ -59,12 +70,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 setState(() {
                   notifications = value;
                 });
-                // Bildirim ayarlarını buraya ekleyebilirsin
+                // Bildirim sistemine entegre edilecekse burada yapılabilir
               },
             ),
           ),
           const Divider(),
 
+          // Hakkında bölümü
           ListTile(
             leading: const Icon(Icons.info),
             title: const Text('About'),
@@ -80,7 +92,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
           const SizedBox(height: 32),
 
-          // Paylaşma butonu
+          // Uygulamayı paylaşma butonu
           GestureDetector(
             onTap: _shareApp,
             child: Container(
@@ -111,7 +123,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
 
-          // Geri Bildirim gönderme bölümü
+          // Geri bildirim gönderme butonu
           GestureDetector(
             onTap: _sendFeedback,
             child: Container(
